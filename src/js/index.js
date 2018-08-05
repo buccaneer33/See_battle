@@ -1,3 +1,3 @@
 'use strict';
 import './img.js';
-import './calculator/calculator.js';
+import './app/app';

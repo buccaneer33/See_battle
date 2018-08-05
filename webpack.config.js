@@ -4,7 +4,7 @@ const ExtractTextPlugin = require ('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 let   faviconsWebpack   = require('favicons-webpack-plugin');
 var   sass              = require('sass');
-var   postcss    		= require('postcss');
+var   postcss    				= require('postcss');
 const CONSTANTS         = require("./constants");
 const AUTOPREFIXER      = require('autoprefixer');
 const EVENT 			= process.env.npm_lifecycle_event || '';
@@ -19,7 +19,7 @@ var   postCssLoader 	= PROD ? ({plugins: [AUTOPREFIXER({browsers:['ie >= 8', 'la
 var clientConfig = (function webpackConfig() {
   var config = Object.assign({});
 
-  config.entry = ['./src/js/index.js','./src/scss/index.scss',];
+  config.entry = ['./src/js/index.js','./src/js/app/app.ts','./src/scss/index.scss'];
   config.output = {path: path.resolve(__dirname,  pathToDist), filename: 'js/main.js'};
 	PROD ? config.devtool = '' : config.devtool = 'source-map';
 	
@@ -41,6 +41,7 @@ var clientConfig = (function webpackConfig() {
 					], publicPath:'./css/'
 				})
 			},
+			{test: /\.tsx?$/, use: 'ts-loader', exclude: /node_modules/},
 			
 			{test: /\.(png|jpg|gif|svg)$/,
 				use: [
@@ -57,7 +58,7 @@ var clientConfig = (function webpackConfig() {
 			}*/
 		]
   }
-	config.resolve = {};
+	config.resolve = {extensions: [ '.tsx', '.ts', '.js' ]};
 
 	config.plugins = [
 	  new ExtractTextPlugin({
@@ -80,7 +81,7 @@ var clientConfig = (function webpackConfig() {
 	    template: './src/html/template/index.html'
         }),
 	  new faviconsWebpack({
-        logo: './src/img/favicon/favicon.jpg',
+        logo: './src/img/favicon/favicon.png',
         prefix: 'img/favicon/',    
         emitStats: false,
         statsFilename: 'iconstats-[hash].json',
